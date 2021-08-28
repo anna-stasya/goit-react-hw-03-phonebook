@@ -67,12 +67,28 @@ class App extends Component {
     );
   };
 
+  //запросы к удаленным ресурсам
+  componentDidMount() {
+    const contacts = localStorage.getItem('contacts');
+    const parsedContacts = JSON.parse(contacts);
+
+    if (parsedContacts) {
+      this.setState({ contacts: parsedContacts });
+    }
+  }
+
+  //запись в localStorage
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+
   render() {
     const { filter } = this.state;
 
     //поиск по фильтру
     const visisbleContacts = this.getVisisbleContacts();
-    console.log(visisbleContacts);
 
     return (
       <div className={s.app}>
